@@ -5,10 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <div id="box"></div>
+
+    <form id="submit">
+        <input id="title-input" type="text" placeholder="Title">
+        <input id="pageNumber-input" type="text" placeholder="Page Number">
+        <input id="author-input" type="text" placeholder="Author">
+    </form>
+
+    <button id="submit-button" form="submit" type="submit">
+        ADD NEW BOOK
+    </button>
 </body>
 </html>
