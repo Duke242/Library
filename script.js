@@ -7,6 +7,10 @@ function Book(author, pageNumber, title) {
   this.title = title;
 }
 
+Book.prototype.read = false
+Book.prototype.toggleRead = () => this.read = !this.read;
+
+
 const titleInput = document.getElementById("title-input");
 const pageNumberInput = document.getElementById("pageNumber-input");
 const authorInput = document.getElementById("author-input");
@@ -18,79 +22,70 @@ function addBookToLibrary(book) {
 
 const wind = new Book("duke", 20, "wind");
 const rain = new Book("steve", 40, "rain");
-
-myLibrary.push(rain);
-myLibrary.push(wind);
-// console.log(myLibrary);
-
-// function arrayLoop(array) {
-//   console.log(array);
-//   let test = array.map((x, index) => {
-//     console.log(x, index);
-//     return x
-//   });
-
-// }
-
-//function arrayLoop() {
-//      const table = document.createElement("table");
-
-//     for (let i = 0; i < myLibrary.length; i += 1) {
-//        const row = document.createElement("tr");
-//        row.setAttribute("id", "row"+i);
-
-//        const button = document.createElement("button");
-//        button.innerHTML = "Delete";
-//        button.addEventListener("click", (evt) => {
-//           // do something with for row i
-//           table.removeChild(row);
-//        });
-//        const cell1 = document.createElement("td");
-//        row.addChildNode(cell1);
-//        row.addChildNode(button);
-//        table.addChildNode(row);
-//      }
-//      document.getElementById("box").addChildNode(table);
-// }
+addBookToLibrary(wind)
+addBookToLibrary(rain)
+arrayLoop()
 
 function arrayLoop() {
   const table = document.createElement("table");
+  table.style.border = "1px solid #000"
   for (let i = 0; i < myLibrary.length; i += 1) {
+    
     const row = document.createElement("tr");
     row.setAttribute("id", "row" + i);
+
+    const readButton = document.createElement("button");
+
+    if (myLibrary[i].read === false) { 
+      readButton.innerHTML = "Not Read"
+    } else if (myLibrary[i].read === true) {
+      readButton.innerHTML = "Read"
+    } else {return}
+
+
+    readButton.addEventListener("click", () => {
+      myLibrary[i].toggleRead()
+      console.log(myLibrary[i])
+      if (myLibrary[i].read === false) { 
+        readButton.innerHTML = "Not Read"
+      } else if (myLibrary[i].read === true) {
+        readButton.innerHTML = "Read"
+      } else {return}
+    })
+  
+    // readButton.setAttribute('style', )
 
     const button = document.createElement("button");
     button.innerHTML = "Delete";
     button.addEventListener("click", (evt) => {
-      //do something with the row
-      table.removeChild(row);
+      myLibrary.splice(i, 1)
+      arrayLoop()
     });
     const cell1 = document.createElement("td");
-    row.addChildNode(cell1);
-    row.addChildNode(button);
-    table.addChildNode(row);
+    const cell2 = document.createElement("td");
+    const cell3 = document.createElement("td");
+    cell1.textContent = myLibrary[i].title
+    cell2.textContent = myLibrary[i].pageNumber
+    cell3.textContent = myLibrary[i].author
+    row.appendChild(cell1);
+    row.appendChild(cell2);
+    row.appendChild(cell3);
+    row.appendChild(button);
+    row.appendChild(readButton);
+    table.appendChild(row);
   }
-  document.getElementById("box").addChildNode(table);
+  document.getElementById("box").innerHTML = "";
+  document.getElementById("box").appendChild(table)
+
+ 
+  
+
 }
 
-// function arrayLoop() {
-//   var htmlButton = "<button>Delete</button>"
-//   var html = "<table border='1|1'>";
-//   for (var i = 0; i < myLibrary.length; i++) {
-//     html += "<tr>";
-//     html += "<td>" + myLibrary[i].author + "</td>";
-//     html += "<td>" + myLibrary[i].pageNumber + "</td>";
-//     html += "<td>" + myLibrary[i].title + "</td>";
-//     html += "<td>" + htmlButton + "</td>";
-//     html += "</tr>";
-//   }
 
-//   html += "</table>";
-//   document.getElementById("box").innerHTML = html;
-// }
 
 window.addEventListener("load", () => {
-  document.querySelector("form")?.addEventListener("submit", (evt) => {
+  document.querySelector("form").addEventListener("submit", (evt) => {
     evt.preventDefault();
     var t = titleInput;
     var p = pageNumberInput;
@@ -100,18 +95,10 @@ window.addEventListener("load", () => {
     } else {
       let x = new Book(t.value, p.value, a.value);
       addBookToLibrary(x);
-      console.log(x);
-      console.log(t.value);
-      console.log(p.value);
-      console.log(a.value);
-      arrayLoop();
+      arrayLoop()
     }
-    console.log(myLibrary);
+   
   });
 });
 
-const btns = document.querySelectorAll("button");
-const btnsArray = Array.from(btns);
-btnsArray.forEach((elem, idx) => {
-  console.log(btnsArray);
-});
+
